@@ -21,16 +21,16 @@ function newEnd() {
   
   var footnote = doc.getFootnotes();
   var counter=1;
-      
+  doc.getBody().appendParagraph(""); // Create a single big paragraph in which all endnotes will belong
   for(var i in footnote){
-    doc.getBody().appendParagraph("["+counter.toString()+"] ");
+    doc.getBody().appendParagraph("\n["+counter.toString()+"] ").merge(); // merge with that big paragraph.
     var footnote_section = footnote[i].getFootnoteContents().copy();
     var footnote_paragraphs = footnote_section.getNumChildren();
     for (var j = 0; j < footnote_paragraphs; ++j){
       var element = footnote_section.getChild(j).copy();
       var type = element.getType();
       if( type == DocumentApp.ElementType.PARAGRAPH ){
-        doc.getBody().appendParagraph(element).merge();
+        doc.getBody().appendParagraph(element).merge(); // also merge in.
       }
       else if( type == DocumentApp.ElementType.LIST_ITEM){
         body.appendListItem(element);
@@ -72,5 +72,5 @@ function replaceNotes() {
       sup.editAsText().setTextAlignment(length, length, DocumentApp.TextAlignment.SUPERSCRIPT);
     }
   }
-  deleteNotes(); // comment this out if you don't want to delete.
+  deleteNotes();
 }
