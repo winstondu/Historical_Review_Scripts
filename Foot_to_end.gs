@@ -21,14 +21,24 @@ function newEnd() {
   
   var footnote = doc.getFootnotes();
   var counter=1;
+      
   for(var i in footnote){
-    doc.getBody().appendParagraph("["+counter.toString()+"] "+footnote[i].getFootnoteContents().copy().getText());
+    doc.getBody().appendParagraph("["+counter.toString()+"] ");
+    var footnote_section = footnote[i].getFootnoteContents().copy();
+    var footnote_paragraphs = footnote_section.getNumChildren();
+    for (var j = 0; j < footnote_paragraphs; ++j){
+      var element = footnote_section.getChild(j).copy();
+      var type = element.getType();
+      if( type == DocumentApp.ElementType.PARAGRAPH ){
+        doc.getBody().appendParagraph(element).merge();
+      }
+      else if( type == DocumentApp.ElementType.LIST_ITEM){
+        body.appendListItem(element);
+      }
+    }
+    // doc.getBody().appendParagraph("["+counter.toString()+"]"+footnote[i].getFootnoteContents().copy().getText());
     counter++;
   }
-  replaceNotes();
-  replaceNotes();
-  replaceNotes();
-  replaceNotes();
   replaceNotes();
 }
 
@@ -56,11 +66,11 @@ function replaceNotes() {
     if(note >= 11) {
       var newLength = sup.getText().length;
       Logger.log("length = " + length + ", newLength = " + newLength);
-      sup.editAsText().setTextAlignment(length, newLength-1, DocumentApp.TextAlignment);
+      sup.editAsText().setTextAlignment(length, newLength-1, DocumentApp.TextAlignment.SUPERSCRIPT);
     } 
       else {
-      sup.editAsText().setTextAlignment(length, length, DocumentApp.TextAlignment);
+      sup.editAsText().setTextAlignment(length, length, DocumentApp.TextAlignment.SUPERSCRIPT);
     }
   }
- // deleteNotes();  //uncomment if you want to delete the footnotes too.
+  deleteNotes(); // comment this out if you don't want to delete.
 }
