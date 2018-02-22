@@ -23,7 +23,7 @@ function newEnd() {
   var counter=1;
   doc.getBody().appendParagraph(""); // Create a single big paragraph in which all endnotes will belong
   for(var i in footnote){
-    doc.getBody().appendParagraph("\n["+counter.toString()+"] ").merge(); // merge with that big paragraph.
+    doc.getBody().appendParagraph("\n["+counter.toString()+"]").merge(); // merge with that big paragraph.
     var footnote_section = footnote[i].getFootnoteContents().copy();
     var footnote_paragraphs = footnote_section.getNumChildren();
     for (var j = 0; j < footnote_paragraphs; ++j){
